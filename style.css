@@ -1,0 +1,270 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 700px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 25px;
+    font-size: 28px;
+}
+
+.input-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+#todoInput {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+#todoInput:focus {
+    border-color: #667eea;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.form-group {
+    flex: 1;
+    min-width: 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-group label {
+    font-size: 13px;
+    color: #666;
+    font-weight: 600;
+}
+
+.form-group select,
+.form-group input[type="date"] {
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.form-group select:focus,
+.form-group input[type="date"]:focus {
+    border-color: #667eea;
+}
+
+#addBtn {
+    padding: 12px 25px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-weight: 600;
+    width: 100%;
+}
+
+#addBtn:hover {
+    background: #5568d3;
+}
+
+#todoList {
+    list-style: none;
+}
+
+.todo-item {
+    background: #f8f9fa;
+    padding: 15px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    border-left: 4px solid #ddd;
+    transition: all 0.3s;
+}
+
+.todo-item:hover {
+    background: #e9ecef;
+    transform: translateX(5px);
+}
+
+.todo-item.priority-high {
+    border-left-color: #ff4757;
+}
+
+.todo-item.priority-medium {
+    border-left-color: #ffa502;
+}
+
+.todo-item.priority-low {
+    border-left-color: #1e90ff;
+}
+
+.todo-item.completed {
+    opacity: 0.6;
+}
+
+.todo-item.completed .todo-text {
+    text-decoration: line-through;
+    color: #999;
+}
+
+.todo-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.todo-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.todo-text {
+    flex: 1;
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+}
+
+.priority-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.priority-badge.high {
+    background: #ffe0e3;
+    color: #ff4757;
+}
+
+.priority-badge.medium {
+    background: #fff4e0;
+    color: #ffa502;
+}
+
+.priority-badge.low {
+    background: #e0f0ff;
+    color: #1e90ff;
+}
+
+.todo-details {
+    font-size: 13px;
+    color: #666;
+    margin-left: 32px;
+    margin-bottom: 10px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.todo-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.progress-section {
+    margin-left: 32px;
+    margin-bottom: 10px;
+}
+
+.progress-label {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    transition: width 0.3s;
+    border-radius: 10px;
+}
+
+.progress-controls {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.progress-btn {
+    padding: 4px 12px;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.progress-btn:hover {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.todo-actions {
+    margin-left: 32px;
+}
+
+.delete-btn {
+    background: #ff4757;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.delete-btn:hover {
+    background: #e84118;
+}

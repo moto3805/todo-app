@@ -1,0 +1,13 @@
+# OSやエディタの一時ファイル
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDEの設定ファイル
+.vscode/
+.idea/
+
+# ログファイル
+*.log
