@@ -5,11 +5,23 @@ const todoList = document.getElementById('todoList');
 const prioritySelect = document.getElementById('prioritySelect');
 const startDate = document.getElementById('startDate');
 const endDate = document.getElementById('endDate');
+const categoryInput = document.getElementById('categoryInput');
+const searchInput = document.getElementById('searchInput');
+const filterSelect = document.getElementById('filterSelect');
+const sortSelect = document.getElementById('sortSelect');
+const categoryTags = document.getElementById('categoryTags');
 
 // ローカルストレージからタスクを読み込む
 let todos = JSON.parse(localStorage.getItem('todos')) || [];
 
+// フィルター・検索・ソートの状態
+let currentFilter = 'all';
+let currentSearch = '';
+let currentSort = 'default';
+let selectedCategory = null;
+
 // 初期表示
+renderCategoryTags();
 renderTodos();
 
 // 追加ボタンのクリックイベント
@@ -20,6 +32,24 @@ todoInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         addTodo();
     }
+});
+
+// 検索イベント
+searchInput.addEventListener('input', (e) => {
+    currentSearch = e.target.value.toLowerCase();
+    renderTodos();
+});
+
+// フィルターイベント
+filterSelect.addEventListener('change', (e) => {
+    currentFilter = e.target.value;
+    renderTodos();
+});
+
+// ソートイベント
+sortSelect.addEventListener('change', (e) => {
+    currentSort = e.target.value;
+    renderTodos();
 });
 
 // タスクを追加する関数
@@ -38,16 +68,19 @@ function addTodo() {
         priority: prioritySelect.value,
         startDate: startDate.value,
         endDate: endDate.value,
-        progress: 0
+        progress: 0,
+        category: categoryInput.value.trim()
     };
 
     todos.push(todo);
     saveTodos();
+    renderCategoryTags();
     renderTodos();
 
     todoInput.value = '';
     startDate.value = '';
     endDate.value = '';
+    categoryInput.value = '';
     prioritySelect.value = 'medium';
     todoInput.focus();
 }
@@ -56,6 +89,7 @@ function addTodo() {
 function deleteTodo(id) {
     todos = todos.filter(todo => todo.id !== id);
     saveTodos();
+    renderCategoryTags();
     renderTodos();
 }
 
@@ -110,6 +144,108 @@ function formatDate(dateStr) {
     return `${month}/${day}`;
 }
 
+// カテゴリータグを表示する関数
+function renderCategoryTags() {
+    const categories = {};
+
+    todos.forEach(todo => {
+        if (todo.category) {
+            categories[todo.category] = (categories[todo.category] || 0) + 1;
+        }
+    });
+
+    if (Object.keys(categories).length === 0) {
+        categoryTags.innerHTML = '';
+        return;
+    }
+
+    categoryTags.innerHTML = Object.entries(categories)
+        .map(([category, count]) => `
+            <div class="category-tag ${selectedCategory === category ? 'active' : ''}" data-category="${category}">
+                ${category} <span class="count">${count}</span>
+            </div>
+        `).join('');
+
+    categoryTags.querySelectorAll('.category-tag').forEach(tag => {
+        tag.addEventListener('click', () => {
+            const category = tag.dataset.category;
+            selectedCategory = selectedCategory === category ? null : category;
+            renderCategoryTags();
+            renderTodos();
+        });
+    });
+}
+
+// タスクをフィルタリングする関数
+function filterTodos(todos) {
+    let filtered = [...todos];
+
+    // フィルター（完了/未完了）
+    if (currentFilter === 'active') {
+        filtered = filtered.filter(todo => !todo.completed);
+    } else if (currentFilter === 'completed') {
+        filtered = filtered.filter(todo => todo.completed);
+    }
+
+    // 検索
+    if (currentSearch) {
+        filtered = filtered.filter(todo =>
+            todo.text.toLowerCase().includes(currentSearch) ||
+            (todo.category && todo.category.toLowerCase().includes(currentSearch))
+        );
+    }
+
+    // カテゴリー選択
+    if (selectedCategory) {
+        filtered = filtered.filter(todo => todo.category === selectedCategory);
+    }
+
+    return filtered;
+}
+
+// タスクをソートする関数
+function sortTodos(todos) {
+    const sorted = [...todos];
+
+    switch (currentSort) {
+        case 'priority':
+            const priorityOrder = { high: 0, medium: 1, low: 2 };
+            sorted.sort((a, b) => {
+                const aPriority = priorityOrder[a.priority || 'medium'];
+                const bPriority = priorityOrder[b.priority || 'medium'];
+                return aPriority - bPriority;
+            });
+            break;
+
+        case 'startDate':
+            sorted.sort((a, b) => {
+                if (!a.startDate) return 1;
+                if (!b.startDate) return -1;
+                return new Date(a.startDate) - new Date(b.startDate);
+            });
+            break;
+
+        case 'endDate':
+            sorted.sort((a, b) => {
+                if (!a.endDate) return 1;
+                if (!b.endDate) return -1;
+                return new Date(a.endDate) - new Date(b.endDate);
+            });
+            break;
+
+        case 'progress':
+            sorted.sort((a, b) => (a.progress || 0) - (b.progress || 0));
+            break;
+
+        case 'default':
+        default:
+            sorted.sort((a, b) => b.id - a.id);
+            break;
+    }
+
+    return sorted;
+}
+
 // タスクを画面に表示する関数
 function renderTodos() {
     todoList.innerHTML = '';
@@ -119,7 +255,15 @@ function renderTodos() {
         return;
     }
 
-    todos.forEach(todo => {
+    let displayTodos = filterTodos(todos);
+    displayTodos = sortTodos(displayTodos);
+
+    if (displayTodos.length === 0) {
+        todoList.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">該当するタスクがありません</p>';
+        return;
+    }
+
+    displayTodos.forEach(todo => {
         const li = document.createElement('li');
         const priority = todo.priority || 'medium';
         li.className = `todo-item priority-${priority} ${todo.completed ? 'completed' : ''}`;
@@ -134,10 +278,13 @@ function renderTodos() {
 
         const progress = todo.progress || 0;
 
+        const categoryHTML = todo.category ? `<span class="category-badge">🏷️ ${todo.category}</span>` : '';
+
         li.innerHTML = `
             <div class="todo-header">
                 <input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked' : ''}>
                 <span class="todo-text">${todo.text}</span>
+                ${categoryHTML}
                 <span class="priority-badge ${priority}">${getPriorityText(priority)}</span>
             </div>
             ${detailsHTML.length > 0 ? `<div class="todo-details">${detailsHTML.join('')}</div>` : ''}

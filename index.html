@@ -15,6 +15,11 @@
 
             <div class="form-row">
                 <div class="form-group">
+                    <label>カテゴリー/タグ</label>
+                    <input type="text" id="categoryInput" placeholder="仕事, 個人, etc...">
+                </div>
+
+                <div class="form-group">
                     <label>優先度</label>
                     <select id="prioritySelect">
                         <option value="low">低</option>
@@ -36,6 +41,34 @@
 
             <button id="addBtn">追加</button>
         </div>
+
+        <div class="control-section">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="🔍 タスクを検索...">
+            </div>
+
+            <div class="filter-box">
+                <label>フィルター:</label>
+                <select id="filterSelect">
+                    <option value="all">すべて</option>
+                    <option value="active">未完了</option>
+                    <option value="completed">完了済み</option>
+                </select>
+            </div>
+
+            <div class="sort-box">
+                <label>並び替え:</label>
+                <select id="sortSelect">
+                    <option value="default">追加順</option>
+                    <option value="priority">優先度順</option>
+                    <option value="startDate">開始日順</option>
+                    <option value="endDate">終了日順</option>
+                    <option value="progress">進捗順</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="categoryTags" class="category-tags"></div>
 
         <ul id="todoList"></ul>
     </div>
