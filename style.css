@@ -275,14 +275,12 @@ h1 {
     border-radius: 10px;
     margin-bottom: 20px;
     display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    align-items: center;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .search-box {
-    flex: 2;
-    min-width: 200px;
+    width: 100%;
 }
 
 .search-box input {
@@ -305,7 +303,7 @@ h1 {
     align-items: center;
     gap: 8px;
     flex: 1;
-    min-width: 150px;
+    min-width: 180px;
 }
 
 .filter-box label,
@@ -331,6 +329,13 @@ h1 {
 .filter-box select:focus,
 .sort-box select:focus {
     border-color: #667eea;
+}
+
+.filter-sort-row {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    flex-wrap: wrap;
 }
 
 .category-tags {

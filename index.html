@@ -27,7 +27,9 @@
                         <option value="high">高</option>
                     </select>
                 </div>
+            </div>
 
+            <div class="form-row">
                 <div class="form-group">
                     <label>開始日</label>
                     <input type="date" id="startDate">
@@ -47,24 +49,26 @@
                 <input type="text" id="searchInput" placeholder="🔍 タスクを検索...">
             </div>
 
-            <div class="filter-box">
-                <label>フィルター:</label>
-                <select id="filterSelect">
-                    <option value="all">すべて</option>
-                    <option value="active">未完了</option>
-                    <option value="completed">完了済み</option>
-                </select>
-            </div>
+            <div class="filter-sort-row">
+                <div class="filter-box">
+                    <label>フィルター:</label>
+                    <select id="filterSelect">
+                        <option value="all">すべて</option>
+                        <option value="active">未完了</option>
+                        <option value="completed">完了済み</option>
+                    </select>
+                </div>
 
-            <div class="sort-box">
-                <label>並び替え:</label>
-                <select id="sortSelect">
-                    <option value="default">追加順</option>
-                    <option value="priority">優先度順</option>
-                    <option value="startDate">開始日順</option>
-                    <option value="endDate">終了日順</option>
-                    <option value="progress">進捗順</option>
-                </select>
+                <div class="sort-box">
+                    <label>並び替え:</label>
+                    <select id="sortSelect">
+                        <option value="default">追加順</option>
+                        <option value="priority">優先度順</option>
+                        <option value="startDate">開始日順</option>
+                        <option value="endDate">終了日順</option>
+                        <option value="progress">進捗順</option>
+                    </select>
+                </div>
             </div>
         </div>
 
