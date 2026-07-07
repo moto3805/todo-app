@@ -230,24 +230,36 @@ h1 {
 
 .progress-controls {
     display: flex;
-    gap: 8px;
+    align-items: center;
+    gap: 10px;
     margin-top: 8px;
 }
 
-.progress-btn {
-    padding: 4px 12px;
-    background: #f8f9fa;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+.progress-controls label {
     font-size: 12px;
-    cursor: pointer;
-    transition: all 0.3s;
+    color: #666;
+    font-weight: 600;
 }
 
-.progress-btn:hover {
-    background: #667eea;
-    color: white;
+.progress-select {
+    flex: 1;
+    padding: 6px 10px;
+    background: #f8f9fa;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s;
+    outline: none;
+}
+
+.progress-select:hover {
     border-color: #667eea;
+}
+
+.progress-select:focus {
+    border-color: #667eea;
+    background: white;
 }
 
 .todo-actions {

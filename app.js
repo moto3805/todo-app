@@ -297,10 +297,20 @@ function renderTodos() {
                     <div class="progress-fill" style="width: ${progress}%"></div>
                 </div>
                 <div class="progress-controls">
-                    <button class="progress-btn decrease">-10%</button>
-                    <button class="progress-btn increase">+10%</button>
-                    <button class="progress-btn set-50">50%</button>
-                    <button class="progress-btn set-100">完了</button>
+                    <label>進捗を選択:</label>
+                    <select class="progress-select">
+                        <option value="0" ${progress === 0 ? 'selected' : ''}>0%</option>
+                        <option value="10" ${progress === 10 ? 'selected' : ''}>10%</option>
+                        <option value="20" ${progress === 20 ? 'selected' : ''}>20%</option>
+                        <option value="30" ${progress === 30 ? 'selected' : ''}>30%</option>
+                        <option value="40" ${progress === 40 ? 'selected' : ''}>40%</option>
+                        <option value="50" ${progress === 50 ? 'selected' : ''}>50%</option>
+                        <option value="60" ${progress === 60 ? 'selected' : ''}>60%</option>
+                        <option value="70" ${progress === 70 ? 'selected' : ''}>70%</option>
+                        <option value="80" ${progress === 80 ? 'selected' : ''}>80%</option>
+                        <option value="90" ${progress === 90 ? 'selected' : ''}>90%</option>
+                        <option value="100" ${progress === 100 ? 'selected' : ''}>100% (完了)</option>
+                    </select>
                 </div>
             </div>
             <div class="todo-actions">
@@ -312,16 +322,20 @@ function renderTodos() {
         const checkbox = li.querySelector('.todo-checkbox');
         checkbox.addEventListener('change', () => toggleTodo(todo.id));
 
-        // 進捗ボタンのイベント
-        li.querySelector('.decrease').addEventListener('click', () => updateProgress(todo.id, -10));
-        li.querySelector('.increase').addEventListener('click', () => updateProgress(todo.id, 10));
-        li.querySelector('.set-50').addEventListener('click', () => {
-            todos = todos.map(t => t.id === todo.id ? {...t, progress: 50, completed: false} : t);
-            saveTodos();
-            renderTodos();
-        });
-        li.querySelector('.set-100').addEventListener('click', () => {
-            todos = todos.map(t => t.id === todo.id ? {...t, progress: 100, completed: true} : t);
+        // 進捗セレクトのイベント
+        const progressSelect = li.querySelector('.progress-select');
+        progressSelect.addEventListener('change', (e) => {
+            const newProgress = parseInt(e.target.value);
+            todos = todos.map(t => {
+                if (t.id === todo.id) {
+                    return {
+                        ...t,
+                        progress: newProgress,
+                        completed: newProgress === 100
+                    };
+                }
+                return t;
+            });
             saveTodos();
             renderTodos();
         });
